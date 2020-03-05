@@ -19,25 +19,25 @@ module.exports = {
 };
 
 /**
- * Authenticate an User with username & password
+ * Authenticate an User with email & password
  * @param {Object} param0 
- * @param {string} username | param0
+ * @param {string} email | param0
  * @param {string} password | param0
  */
-function authenticate({ username, password }) {
+function authenticate({ email, password }) {
 
     let days = 1; // numb of day for expiry date
     let isSha1 = /^[0-9a-f]{40}$/i;
     return MODELS.user.findOne({ //Query
         where: {
-            username: username,
+            email: email,
             password: (isSha1.test(password)) ? password : sha1(password),
             active: true
         }
     }).then(
         user => {
             if(user) {
-                const token = jwt.sign({ sub: user.id, name: user.username }, config.secret, { expiresIn: days +' days' }); // Synchronously create token
+                const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: days +' days' }); // Synchronously create token
                 user.access_token = token;
                 let expirDate = new Date();
                 expirDate.setDate(expirDate.getDate() + days)
@@ -97,11 +97,7 @@ function getById(id) {
 function create(data) {
     let query = {
         where: {
-            [Op.or]: [{
-                username: data.username
-            }, {
-                email: data.email
-            }]
+            email: data.email
         }
     };
 
@@ -115,14 +111,6 @@ function create(data) {
                         field: 'email',
                         value: data.email,
                         message: 'validation.body.unique.email'
-                    });
-                }
-                if (user.username === data.username) {
-                    errors.push({
-                        type: 'body',
-                        field: 'username',
-                        value: data.email,
-                        message: 'validation.body.unique.username'
                     });
                 }
             }
