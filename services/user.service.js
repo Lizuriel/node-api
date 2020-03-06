@@ -178,7 +178,6 @@ function updateToken(id, data) {
  * @return { User } user
  */
 function updateUser(id, data) {
-    // get user by id
     return MODELS.user.findOne({
         where: {
             id: id
@@ -203,27 +202,27 @@ function updateUser(id, data) {
                         });
                     });
                 } else {
-                    user = MODELS.user.build(data)
-                    await user.save();
-                    return new Promise(function(resolve, reject) {
-                        resolve({
-                            user: userUpdated
-                        })
-                    })
-                    // return user.update(data).then(
-                    //     userUpdated => {
-                    //         return new Promise(function(resolve, reject) {
-                    //             resolve({
-                    //                 user: userUpdated
-                    //             })
-                    //         })
-                    //     },
-                    //     error => {
-                    //         return new Promise(function (resolve, reject) {
-                    //             reject(error);
-                    //         });
-                    //     }
-                    // )
+                    // user = MODELS.user.build(data)
+                    // await user.save();
+                    // return new Promise(function(resolve, reject) {
+                    //     resolve({
+                    //         user: userUpdated
+                    //     })
+                    // })
+                    return user.update(data, {where: { id: data.id }}).then(
+                        userUpdated => {
+                            return new Promise(function(resolve, reject) {
+                                resolve({
+                                    user: userUpdated
+                                })
+                            })
+                        },
+                        error => {
+                            return new Promise(function (resolve, reject) {
+                                reject(error);
+                            });
+                        }
+                    )
                 } 
             } else {
                 return new Promise(function (resolve, reject) {
