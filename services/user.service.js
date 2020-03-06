@@ -43,31 +43,14 @@ function authenticate({ email, password }) {
                 expirDate.setDate(expirDate.getDate() + days)
                 user.access_token_expire_date = expirDate;
                 delete expirDate;
-                updateToken(user.id, user).then(
-                    result => {
-                        if (result.success == true) {
-                            return new Promise(function(resolve) {
-                                resolve({
-                                    success: true,
-                                    // token: token,
-                                    user: user
-                                })
-                            })
-                        } else {
-                            return new Promise(function(resolve, reject) {
-                                reject({
-                                    success: false
-                                })
-                            })
-                        }
-                    },
-                    error => {
-                        return new Promise(function (resolve, reject) {
-                            reject(error);
-                        });
-                    }
-                )
-                
+                updateToken(user.id, user);
+                return new Promise(function(resolve) {
+                    resolve({
+                        success: true,
+                        // token: token,
+                        user: user
+                    })
+                })                
             } else {
                 return new Promise(function(resolve, reject) {
                     reject({
@@ -181,13 +164,9 @@ function updateToken(id, data) {
         where: { id: id }
     }).then(
         async user => {
-            console.log(user)
             user.access_token = data.access_token;
             user.access_token_expire_date = data.access_token_expire_date;
             await user.save();
-            return new Promise(function(resolve){
-                resolve({success: true});
-            })
         }
     )
 }
