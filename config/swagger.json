@@ -1,0 +1,617 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "",
+        "title": "API",
+        "description": "A API to govern them all"
+    },
+    "host": "localhost:3333",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/x-www-form-urlencoded",
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+
+    "paths": {
+        "/users/{user_id}": {
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "operationId": "GET-user",
+                "summary": "Get User",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/user-output"
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/trait:getResponse:400"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:getResponse:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:getResponse:404"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "PUT-user",
+                "summary": "Update User",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/user-update-input"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/trait:putResponse:200"
+                    },
+                    "400": {
+                        "$ref": "#/responses/trait:putResponse:400"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:putResponse:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:putResponse:404"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "DELETE-user",
+                "summary": "Delete User",
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "204": {
+                        "$ref": "#/responses/trait:deleteResponse:204"
+                    },
+                    "400": {
+                        "$ref": "#/responses/trait:deleteResponse:400"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:deleteResponse:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:deleteResponse:404"
+                    }
+                }
+            }
+        },
+        "/mediascopies": {
+            "get": {
+                "operationId": "LIST-mediascopies",
+                "summary": "List Mediascopies",
+                "tags": [
+                    "Mediascopies"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mediascopie-output"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "POST-mediascopie",
+                "summary": "Create Mediascopie",
+                "tags": [
+                    "Mediascopies"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/mediascopie-create-input"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/trait:postResponse:201"
+                    },
+                    "400": {
+                        "$ref": "#/responses/trait:postResponse:400"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:postResponse:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:postResponse:404"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        }
+    },
+
+    "responses": {
+        "trait:deleteResponse:204": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:deleteResponse:400": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:deleteResponse:403": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:deleteResponse:404": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:getResponse:200": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:getResponse:400": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:getResponse:403": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:getResponse:404": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:postResponse:201": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:postResponse:400": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:postResponse:403": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:postResponse:404": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:putResponse:200": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:putResponse:400": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:putResponse:403": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        },
+        "trait:putResponse:404": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/error-response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "error-response": {
+            "title": "Error response",
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "field": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        },
+        "user-update-input": {
+            "title": "User Input",
+            "type": "object",
+            "properties": {
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "user-create-input": {
+            "title": "User Create Input",
+            "type": "object",
+            "properties": {
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "password_repeat": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "firstname",
+                "lastname",
+                "email",
+                "password",
+                "password_repeat"
+            ]
+        },
+        "user-output": {
+            "title": "User Output",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "mediascopie-create-input": {
+            "title": "Mediascopie Input",
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "customer": {
+                    "type": "string"
+                },
+                "guest": {
+                    "type": "string"
+                },
+                "date_event": {
+                    "type": "string"
+                },
+                "media_type": {
+                    "type": "string"
+                },
+                "media_format": {
+                    "type": "string"
+                },
+                "media_length": {
+                    "type": "number"
+                },
+                "media_name": {
+                    "type": "string"
+                },
+                "media_extension": {
+                    "type": "string"
+                }
+            }
+        },
+        "mediascopie-output": {
+            "title": "Mediascopie Output",
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "customer": {
+                    "type": "string"
+                },
+                "guest": {
+                    "type": "string"
+                },
+                "date_event": {
+                    "type": "string"
+                },
+                "media_type": {
+                    "type": "string"
+                },
+                "media_format": {
+                    "type": "string"
+                },
+                "media_length": {
+                    "type": "number"
+                },
+                "media_name": {
+                    "type": "string"
+                },
+                "media_extension": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

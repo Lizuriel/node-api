@@ -43,14 +43,31 @@ function authenticate({ email, password }) {
                 expirDate.setDate(expirDate.getDate() + days)
                 user.access_token_expire_date = expirDate;
                 delete expirDate;
-                updateUser(user.id, user);
-                return new Promise(function(resolve) {
-                    resolve({
-                        success: true,
-                        // token: token,
-                        user: user
-                    })
-                })
+                updateToken(user.id, user).then(
+                    result => {
+                        if (result.success == true) {
+                            return new Promise(function(resolve) {
+                                resolve({
+                                    success: true,
+                                    // token: token,
+                                    user: user
+                                })
+                            })
+                        } else {
+                            return new Promise(function(resolve, reject) {
+                                reject({
+                                    success: false
+                                })
+                            })
+                        }
+                    },
+                    error => {
+                        return new Promise(function (resolve, reject) {
+                            reject(error);
+                        });
+                    }
+                )
+                
             } else {
                 return new Promise(function(resolve, reject) {
                     reject({
@@ -158,6 +175,23 @@ function create(data) {
     );
 }
 
+function updateToken(id, data) {
+    return MODELS.user.findOne({
+        attributes: ['id', 'access_token', 'access_token_expire_date'],
+        where: { id: id }
+    }).then(
+        async user => {
+            console.log(user)
+            user.access_token = data.access_token;
+            user.access_token_expire_date = data.access_token_expire_date;
+            await user.save();
+            return new Promise(function(resolve){
+                resolve({success: true});
+            })
+        }
+    )
+}
+
 /**
  * update an existant user
  * @param { number } id 
@@ -190,13 +224,27 @@ function updateUser(id, data) {
                         });
                     });
                 } else {
-                    user = data;
+                    user = MODELS.user.build(data)
                     await user.save();
                     return new Promise(function(resolve, reject) {
                         resolve({
-                            user: user
+                            user: userUpdated
                         })
                     })
+                    // return user.update(data).then(
+                    //     userUpdated => {
+                    //         return new Promise(function(resolve, reject) {
+                    //             resolve({
+                    //                 user: userUpdated
+                    //             })
+                    //         })
+                    //     },
+                    //     error => {
+                    //         return new Promise(function (resolve, reject) {
+                    //             reject(error);
+                    //         });
+                    //     }
+                    // )
                 } 
             } else {
                 return new Promise(function (resolve, reject) {
